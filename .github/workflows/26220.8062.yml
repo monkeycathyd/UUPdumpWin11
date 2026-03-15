@@ -9,20 +9,31 @@ jobs:
 
     steps:
 
-    - name: Checkout repository
+    - name: Checkout
       uses: actions/checkout@v4
+
+    - name: Enable long paths
+      run: git config --system core.longpaths true
 
     - name: Free disk space
       run: |
         rm -rf "C:\Program Files\Android"
         rm -rf "C:\Program Files\Microsoft SDKs"
 
-    - name: Run UUP dump script
+    - name: Build ISO
       run: |
+        cd 26220.8062
         cmd /c uup_download_windows.cmd
 
     - name: Upload ISO
       uses: actions/upload-artifact@v4
       with:
         name: windows_iso
-        path: "*.iso"
+        path: "**/*.iso"
+
+    - name: Publish Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: build-26220.8062
+        name: Windows 11 26220.8062
+        files: "**/*.iso"
