@@ -1,13 +1,13 @@
-name: 26220.8062
+name: Windows11_25H2_Beta_26220.8062
 on: workflow_dispatch
 #on: [push, pull_request]
 
 env:
   Build_VERSION: '26220.8062'
-  FILE_NAME: 26220.8062
+  FILE_NAME: Windows11_25H2_Beta_26220.8062
 
 jobs:
-  26220.8062:
+  Windows-25H2-Beta-26220-8062:
     runs-on: windows-latest
 
     steps:
