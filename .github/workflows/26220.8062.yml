@@ -1,4 +1,4 @@
-name: Windows10_25H2_amd64_Beta_26220.8062_zh-cn_professional
+name: 26220.8062_zh-cn_professional
 
 on:
   workflow_dispatch:
