@@ -1,39 +1,52 @@
-name: 26220.8062_zh-cn_professional
+name: 26220.8062
+on: workflow_dispatch
+#on: [push, pull_request]
 
-on:
-  workflow_dispatch:
+env:
+  Build_VERSION: '26220.8062'
+  FILE_NAME: 26220.8062
 
 jobs:
-  build:
+  26220.8062:
     runs-on: windows-latest
 
     steps:
 
-    - name: Checkout
-      uses: actions/checkout@v4
+    # 检出本仓库
+    - name: Checkout repository
+      uses: actions/checkout@v5
 
-    - name: Enable long paths
-      run: git config --system core.longpaths true
-
-    - name: Free disk space
+    # 制作ISO
+    - name: UUP dump WinISO
+      shell: cmd
       run: |
-        rm -rf "C:\Program Files\Android"
-        rm -rf "C:\Program Files\Microsoft SDKs"
+        cd ${{env.FILE_NAME}}
+        dir
+        uup_download_windows.cmd
 
-    - name: Build ISO
+    # 查看目录
+    - name: dir dir
+      shell: cmd
       run: |
-        cd 26220.8062
-        cmd /c uup_download_windows.cmd
+        cd ${{env.FILE_NAME}}
+        dir
 
-    - name: Upload ISO
-      uses: actions/upload-artifact@v4
+    # 打包
+    - name: Package binaries
+      run: |
+        #ls     #Directory: D:\a\UUPdumpWinISO\UUPdumpWinISO(即仓库目录)
+        7z a -v1950M ${{env.FILE_NAME}}-${{env.Build_VERSION}}.7z ./${{env.FILE_NAME}}/*.iso -mx=9
+
+    # 上传镜像
+    - uses: actions/upload-artifact@v4
       with:
-        name: windows_iso
-        path: "**/*.iso"
+        name: ${{env.FILE_NAME}}-${{env.Build_VERSION}}
+        path: ${{env.FILE_NAME}}-${{env.Build_VERSION}}.7z*
 
-    - name: Publish Release
+    # 发布镜像
+    - name: Release
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: build-26220.8062
-        name: Windows 11 26220.8062
-        files: "**/*.iso"
+        tag_name: ${{env.FILE_NAME}}-${{env.Build_VERSION}}
+        release_name: ${{env.FILE_NAME}}-${{env.Build_VERSION}}
+        files: ${{env.FILE_NAME}}-${{env.Build_VERSION}}.7z*
