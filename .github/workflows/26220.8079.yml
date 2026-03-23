@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 env:
   Build_VERSION: '26220.8079'
-  FILE_NAME: Windows11_25H2_Beta_26220.8079
+  FILE_NAME: 26220.8079_amd64_zh-cn_professional_0cc48915_convert
 
 jobs:
   Windows-25H2-Beta-26220-8079:
